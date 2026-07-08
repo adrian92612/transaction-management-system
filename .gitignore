@@ -1,0 +1,24 @@
+# Root .gitignore
+
+# System files (apply to all sub-folders)
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# OS-generated files
+.Trashes
+._*
+
+# General IDE folders (if you ever open the root in an IDE)
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build/Dist artifacts that might end up at root
+dist/
+build/

@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import type { Transaction } from "../types/transaction";
-import { fetchTransactions } from "../services/transactionService";
+import type {
+  CreateTransactionRequest,
+  Transaction,
+} from "../types/transaction";
+import {
+  createTransaction,
+  fetchTransactions,
+} from "../services/transactionService";
 
 export function useTransaction() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const loadTransactions = async () => {
     setLoading(true);
     setError(null);
+
     try {
-      const response = await fetchTransactions();
-      setTransactions(response.data);
+      const data = await fetchTransactions();
+      setTransactions(data);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unexpected error occurred.",
@@ -22,10 +30,40 @@ export function useTransaction() {
     }
   };
 
+  const addTransaction = async (
+    request: CreateTransactionRequest,
+  ): Promise<boolean> => {
+    setError(null);
+    setCreating(true);
+
+    try {
+      const transaction = await createTransaction(request);
+
+      setTransactions((prev) => [...prev, transaction]);
+
+      return true;
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred.",
+      );
+
+      return false;
+    } finally {
+      setCreating(false);
+    }
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadTransactions();
   }, []);
 
-  return { transactions, loading, error, refresh: loadTransactions };
+  return {
+    transactions,
+    loading,
+    creating,
+    error,
+    refresh: loadTransactions,
+    addTransaction,
+  };
 }

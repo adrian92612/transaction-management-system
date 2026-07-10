@@ -61,7 +61,7 @@ public class TransactionService {
     public Transaction createTransaction(CreateTransactionRequest transactionRequest) {
         Transaction transaction = new Transaction(
             transactionRequest.date(),
-            transactionRequest.accountNumber().trim(),
+            formatAccountNumber(transactionRequest.accountNumber().trim()),
             transactionRequest.accountHolderName().trim(),
             transactionRequest.amount(),
             generateRandomStatus()
@@ -114,5 +114,12 @@ public class TransactionService {
     private TransactionStatus generateRandomStatus() {
         TransactionStatus[] statuses = TransactionStatus.values();
         return statuses[ThreadLocalRandom.current().nextInt(statuses.length)];
+    }
+
+    private String formatAccountNumber(String accountNumber) {
+        return accountNumber.replaceFirst(
+                "(\\d{4})(\\d{4})(\\d{4})",
+                "$1-$2-$3"
+        );
     }
 }

@@ -1,8 +1,8 @@
-import { useTransaction } from "#hooks/useTransaction";
 import { formatCurrency } from "#lib/utils";
 
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { useTransactionContext } from "@/context/TransactionContext";
 
 const STATUS_VARIANTS: Record<
   string,
@@ -14,14 +14,11 @@ const STATUS_VARIANTS: Record<
 };
 
 export default function TransactionList() {
-  const { transactions, loading, error } = useTransaction();
+  const { transactions, loading, error } = useTransactionContext();
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
   if (error)
     return <div className="text-red-500 text-center py-10">Error: {error}</div>;
-
-  const getBadgeVariant = (status: string) =>
-    STATUS_VARIANTS[status] ?? "secondary";
 
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-3">
@@ -54,7 +51,7 @@ export default function TransactionList() {
               </Popover>
 
               <div className="flex justify-center">
-                <Badge variant={getBadgeVariant(t.status)}>{t.status}</Badge>
+                <Badge variant={STATUS_VARIANTS[t.status]}>{t.status}</Badge>
               </div>
             </div>
           </div>

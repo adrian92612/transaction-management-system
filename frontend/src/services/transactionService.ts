@@ -6,32 +6,33 @@ import type {
 
 const API_URL = "http://localhost:8080/api/v1";
 
-export async function fetchTransactions(): Promise<ApiResponse<Transaction[]>> {
-  const response = await fetch(API_URL + "/transactions");
-  const result = await response.json();
+export async function fetchTransactions(): Promise<Transaction[]> {
+  const response = await fetch(`${API_URL}/transactions`);
+  const result: ApiResponse<Transaction[]> = await response.json();
 
   if (!response.ok) {
     throw new Error(result.message || "Error fetching transactions");
   }
 
-  return result;
+  return result.data;
 }
 
 export async function createTransaction(
   transaction: CreateTransactionRequest,
-): Promise<ApiResponse<Transaction>> {
-  const response = await fetch(API_URL + "/transactions", {
+): Promise<Transaction> {
+  const response = await fetch(`${API_URL}/transactions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(transaction),
   });
-  const result = await response.json();
+
+  const result: ApiResponse<Transaction> = await response.json();
 
   if (!response.ok) {
     throw new Error(result.message || "Error creating transaction");
   }
 
-  return result;
+  return result.data;
 }

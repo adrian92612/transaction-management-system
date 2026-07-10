@@ -4,9 +4,11 @@ import TransactionList from "#components/TransactionList";
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <TransactionList />
+      <main className="grow">
+        <TransactionList />
+      </main>
       <Footer />
     </div>
   );

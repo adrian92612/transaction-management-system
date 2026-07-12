@@ -7,3 +7,16 @@ export type Transaction = {
 };
 
 export type CreateTransactionRequest = Omit<Transaction, "status">;
+
+export type SortKey =
+  | "default"
+  | "date"
+  | "accountNumber"
+  | "accountHolderName"
+  | "amount"
+  | "status";
+
+export type SortConfig = {
+  key: SortKey;
+  direction: "asc" | "desc";
+};

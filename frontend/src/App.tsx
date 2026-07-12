@@ -1,13 +1,13 @@
 import Footer from "#components/Footer";
 import Header from "#components/Header";
-import TransactionList from "#components/TransactionList";
+import TransactionSection from "#components/Transactions/TransactionSection";
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="grow">
-        <TransactionList />
+        <TransactionSection />
       </main>
       <Footer />
     </div>

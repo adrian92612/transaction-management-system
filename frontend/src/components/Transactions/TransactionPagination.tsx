@@ -7,8 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import type { Dispatch, SetStateAction } from "react";
-
-const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];
+import { ITEMS_PER_PAGE_OPTIONS } from "@/constants/transaction";
 
 type Props = {
   itemsPerPage: number;

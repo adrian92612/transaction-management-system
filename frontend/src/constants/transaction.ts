@@ -59,3 +59,14 @@ export const SORT_DIRECTION_OPTIONS = [
     value: "desc",
   },
 ] as const;
+
+export const STATUS_VARIANTS: Record<
+  string,
+  "default" | "outline" | "destructive" | "secondary"
+> = {
+  Settled: "default",
+  Pending: "outline",
+  Failed: "destructive",
+};
+
+export const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];

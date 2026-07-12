@@ -1,25 +1,17 @@
 import type { Transaction } from "@/types/transaction";
 import { formatCurrency } from "#lib/utils";
-
 import { Badge } from "@/components/ui/badge";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-const STATUS_VARIANTS: Record<
-  string,
-  "default" | "outline" | "destructive" | "secondary"
-> = {
-  Settled: "default",
-  Pending: "outline",
-  Failed: "destructive",
-};
+import { STATUS_VARIANTS } from "@/constants/transaction";
 
 type Props = {
   t: Transaction;
 };
+
 export default function TransactionCard({ t }: Props) {
   return (
     <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

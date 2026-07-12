@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type {
+  AddTransactionResult,
   CreateTransactionRequest,
   Transaction,
 } from "../types/transaction";
@@ -32,22 +33,28 @@ export function useTransaction() {
 
   const addTransaction = async (
     request: CreateTransactionRequest,
-  ): Promise<boolean> => {
+  ): Promise<AddTransactionResult> => {
     setError(null);
     setCreating(true);
 
     try {
-      const transaction = await createTransaction(request);
+      const response = await createTransaction(request);
 
-      setTransactions((prev) => [...prev, transaction]);
+      setTransactions((prev) => [...prev, response.data]);
 
-      return true;
+      return {
+        success: true,
+        message: response.message || "Transaction created successfully",
+      };
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred.",
-      );
+      const message =
+        err instanceof Error ? err.message : "An unexpected error occurred.";
 
-      return false;
+      setError(message);
+      return {
+        success: false,
+        message,
+      };
     } finally {
       setCreating(false);
     }

@@ -1,39 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Controller } from "react-hook-form";
 import { useTransactionContext } from "@/context/TransactionContext";
-
-const transactionSchema = z.object({
-  date: z
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
-  accountNumber: z
-    .string()
-    .trim()
-    .length(12, "Account number must be 12 digits")
-    .regex(/^\d{12}$/, "Account number must be exactly 12 digits"),
-  accountHolderName: z
-    .string()
-    .trim()
-    .min(1, "Account holder name is required"),
-  amount: z
-    .number({ error: "Amount must be a number" })
-    .positive("Amount must be positive")
-    .refine(
-      (val) => /^\d+(\.\d{1,2})?$/.test(val.toString()),
-      "Amount can have a maximum of 2 decimal places",
-    ),
-});
-
-type TransactionFormData = z.infer<typeof transactionSchema>;
+import { toast } from "sonner";
+import type { TransactionFormData } from "@/types/transaction";
+import { transactionSchema } from "@/schemas/transaction";
 
 export default function TransactionForm() {
   const { addTransaction, refresh, creating } = useTransactionContext();
-  const form = useForm<z.infer<typeof transactionSchema>>({
+  const form = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     mode: "onSubmit",
     defaultValues: {
@@ -45,11 +22,14 @@ export default function TransactionForm() {
   });
 
   async function onSubmit(values: TransactionFormData) {
-    const success = await addTransaction(values);
-    if (success) {
-      await refresh();
-      form.reset();
+    const result = await addTransaction(values);
+    if (!result.success) {
+      toast.error(result.message);
+      return;
     }
+    toast.success(result.message);
+    await refresh();
+    form.reset();
   }
 
   return (

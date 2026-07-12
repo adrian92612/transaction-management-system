@@ -7,6 +7,8 @@ import { useTransactionTable } from "#hooks/useTransactionTable";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
 import { Label } from "#components/ui/label";
+import TransactionError from "./TransactionError";
+import TransactionLoading from "./TransactionLoading";
 
 export default function TransactionSection() {
   const { transactions, loading, error } = useTransactionContext();
@@ -26,10 +28,11 @@ export default function TransactionSection() {
     resetFilters,
   } = useTransactionTable(transactions);
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <TransactionLoading />;
 
-  if (error)
-    return <div className="text-center py-10 text-red-500">Error: {error}</div>;
+  if (error) {
+    return <TransactionError message={error} onRetry={resetFilters} />;
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-3">

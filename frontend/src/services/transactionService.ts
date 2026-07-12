@@ -1,13 +1,12 @@
+import { APP_CONFIG } from "@/constants/appConfig";
 import type { ApiResponse } from "../types/api";
 import type {
   CreateTransactionRequest,
   Transaction,
 } from "../types/transaction";
 
-const API_URL = "http://localhost:8080/api/v1";
-
 export async function fetchTransactions(): Promise<Transaction[]> {
-  const response = await fetch(`${API_URL}/transactions`);
+  const response = await fetch(`${APP_CONFIG.API_BASE_URL}/transactions`);
   const result: ApiResponse<Transaction[]> = await response.json();
 
   if (!response.ok) {
@@ -19,8 +18,8 @@ export async function fetchTransactions(): Promise<Transaction[]> {
 
 export async function createTransaction(
   transaction: CreateTransactionRequest,
-): Promise<Transaction> {
-  const response = await fetch(`${API_URL}/transactions`, {
+): Promise<ApiResponse<Transaction>> {
+  const response = await fetch(`${APP_CONFIG.API_BASE_URL}/transactions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,5 +33,5 @@ export async function createTransaction(
     throw new Error(result.message || "Error creating transaction");
   }
 
-  return result.data;
+  return result;
 }

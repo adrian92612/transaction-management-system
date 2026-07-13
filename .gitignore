@@ -22,3 +22,6 @@ Thumbs.db
 # Build/Dist artifacts that might end up at root
 dist/
 build/
+
+node_modules/
+.pnpm-store/

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "frontend": "pnpm --dir frontend dev",
+    "backend": "cd backend && mvnw spring-boot:run",
+    "dev": "concurrently \"pnpm frontend\" \"pnpm backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}

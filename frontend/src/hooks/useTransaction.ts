@@ -20,8 +20,8 @@ export function useTransaction() {
     setError(null);
 
     try {
-      const data = await fetchTransactions();
-      setTransactions(data);
+      const response = await fetchTransactions();
+      setTransactions(response.data);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unexpected error occurred.",

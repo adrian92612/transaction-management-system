@@ -5,7 +5,7 @@ import type {
   Transaction,
 } from "../types/transaction";
 
-export async function fetchTransactions(): Promise<Transaction[]> {
+export async function fetchTransactions(): Promise<ApiResponse<Transaction[]>> {
   const response = await fetch(`${APP_CONFIG.API_BASE_URL}/transactions`);
   const result: ApiResponse<Transaction[]> = await response.json();
 
@@ -13,7 +13,7 @@ export async function fetchTransactions(): Promise<Transaction[]> {
     throw new Error(result.message || "Error fetching transactions");
   }
 
-  return result.data;
+  return result;
 }
 
 export async function createTransaction(

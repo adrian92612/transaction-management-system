@@ -33,6 +33,7 @@ export default function TransactionCard({ t }: Props) {
             <Popover>
               <PopoverTrigger
                 className="tabular-nums text-sm font-semibold text-right truncate overflow-hidden hover:cursor-pointer font-mono"
+                nativeButton={false}
                 render={<span>${formatCurrency(t.amount)}</span>}
               />
               <PopoverContent>
